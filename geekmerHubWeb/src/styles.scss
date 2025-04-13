@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+$tiffany-blue: #bcece0;
+$cyan: #36eee0;
+$hot-pink: #f652a0;
+$cornflower: #4c5270;
+// Override Bootstrap color variables
+$primary: $tiffany-blue;
+$secondary: $cyan;
+$success: $hot-pink;
+$info: $cornflower;
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
