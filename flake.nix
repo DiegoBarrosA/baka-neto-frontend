@@ -12,11 +12,20 @@
       devShells = eachSystem (pkgs: {
         default = pkgs.mkShell {
           packages = [
-            pkgs.nodejs
+            pkgs.chromium
+            pkgs.nodejs_20
             pkgs.corepack
             pkgs.nodePackages.typescript
             pkgs.nodePackages.typescript-language-server
           ];
+
+          # Add environment variables here
+          env = {
+            # Set CHROME_BIN to the path of the chromium executable
+            # Nix automatically resolves pkgs.chromium to its store path
+            # and the executable is typically in its bin/ subdirectory.
+            CHROME_BIN = "${pkgs.chromium}/bin/chromium";
+          };
         };
       });
     };

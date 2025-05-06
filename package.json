@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "@angular/cli": "^19.2.7"
+  },
+  "devDependencies": {
+    "karma-coverage-istanbul-reporter": "^3.0.3",
+    "sonarqube-scanner": "^4.3.0"
   }
 }

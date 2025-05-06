@@ -9,15 +9,12 @@ import {
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
-// import { environment } from '../environments/environment'; // Removed incorrect import
-// Import the environment file directly, path may vary based on your project structure
-// import { environment } from '../../../environments/environment'; // Removed original import
 
 @Component({
   selector: "app-register",
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, HttpClientModule, CommonModule],
-  templateUrl: "./register.component.html", // Assuming your HTML file is named register.component.html in the same directory
+  templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
 })
 export class RegisterComponent implements OnInit {
@@ -37,17 +34,15 @@ export class RegisterComponent implements OnInit {
         name: ["", Validators.required],
         email: ["", [Validators.required, Validators.email]],
         password: ["", [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ["", Validators.required], // Added confirmPassword
+        confirmPassword: ["", Validators.required],
         termsAccepted: [false, Validators.requiredTrue],
       },
       { validators: this.passwordMatchValidator },
-    ); // Add custom validator
-    this.apiUrl = "http://localhost:30081"; // Default, and get from environment
+    );
+    this.apiUrl = "http://localhost:30081";
   }
 
-  ngOnInit(): void {
-    //  this.apiUrl = environment.apiUrl; // removed duplicate initialization
-  }
+  ngOnInit(): void {}
 
   passwordMatchValidator(group: FormGroup) {
     const password = group.controls["password"].value;
@@ -63,7 +58,7 @@ export class RegisterComponent implements OnInit {
       this.successMessage = "";
 
       const user = {
-	name: this.registerForm.value.name,
+        name: this.registerForm.value.name,
         username: this.registerForm.value.name,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
@@ -75,8 +70,6 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
           this.successMessage =
             "Registration successful! Please check your email to confirm your account.";
-          // Optionally, redirect the user:
-          // this.router.navigate(['/login']);
         },
         error: (error) => {
           this.loading = false;
