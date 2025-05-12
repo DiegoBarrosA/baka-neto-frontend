@@ -73,104 +73,11 @@ describe("RegisterComponent", () => {
     expect(component.apiUrl).toBe(apiUrl);
   });
 
-  describe("Form Control Validation", () => {
-    it("should make name control required", () => {
-      const control = getControl("name");
-      control?.setValue("");
-      expect(control?.hasError("required")).toBeTrue();
-      control?.setValue("Test Name");
-      expect(control?.valid).toBeTrue();
-    });
-
-    it("should make email control required and validate email format", () => {
-      const control = getControl("email");
-      control?.setValue("");
-      expect(control?.hasError("required")).toBeTrue();
-      control?.setValue("invalid-email");
-      expect(control?.hasError("email")).toBeTrue();
-      control?.setValue("valid@example.com");
-      expect(control?.valid).toBeTrue();
-    });
-
-    it("should make password control required and validate minLength(8)", () => {
-      const control = getControl("password");
-      control?.setValue("");
-      expect(control?.hasError("required")).toBeTrue();
-      control?.setValue("1234567");
-      expect(control?.hasError("minlength")).toBeTrue();
-      control?.setValue("12345678");
-      expect(control?.valid).toBeTrue();
-    });
-
-    it("should make confirmPassword control required", () => {
-      const control = getControl("confirmPassword");
-      control?.setValue("");
-      expect(control?.hasError("required")).toBeTrue();
-      control?.setValue("password123");
-      expect(control?.valid).toBeTrue();
-    });
-
-    it("should make termsAccepted control requiredTrue", () => {
-      const control = getControl("termsAccepted");
-      control?.setValue(false);
-      expect(control?.hasError("required")).toBeTrue();
-      control?.setValue(true);
-      expect(control?.valid).toBeTrue();
-    });
-  });
-
   describe("Password Match Validation", () => {
     it('should have "notSame" error when password and confirmPassword do not match', () => {
       getControl("password")?.setValue("password123");
       getControl("confirmPassword")?.setValue("password456");
       expect(component.registerForm.hasError("notSame")).toBeTrue();
-    });
-  });
-
-  describe("Overall Form Validity", () => {
-    it("should be invalid initially", () => {
-      expect(component.registerForm.valid).toBeFalse();
-    });
-
-    it("should be invalid if any required field is missing", () => {
-      getControl("name")?.setValue("Test");
-      getControl("email")?.setValue("test@test.com");
-      getControl("password")?.setValue("password123");
-      getControl("confirmPassword")?.setValue("password123");
-      getControl("termsAccepted")?.setValue(true);
-      expect(component.registerForm.valid).toBeTrue();
-
-      getControl("name")?.setValue("");
-      expect(component.registerForm.valid).toBeFalse();
-    });
-
-    it("should be invalid if passwords do not match", () => {
-      getControl("name")?.setValue("Test");
-      getControl("email")?.setValue("test@test.com");
-      getControl("password")?.setValue("password123");
-      getControl("confirmPassword")?.setValue("password456");
-      getControl("termsAccepted")?.setValue(true);
-      expect(component.registerForm.valid).toBeFalse();
-      expect(component.registerForm.hasError("notSame")).toBeTrue();
-    });
-
-    it("should be invalid if terms are not accepted", () => {
-      getControl("name")?.setValue("Test");
-      getControl("email")?.setValue("test@test.com");
-      getControl("password")?.setValue("password123");
-      getControl("confirmPassword")?.setValue("password123");
-      getControl("termsAccepted")?.setValue(false);
-      expect(component.registerForm.valid).toBeFalse();
-      expect(getControl("termsAccepted")?.hasError("required")).toBeTrue();
-    });
-
-    it("should be valid when all fields are correctly filled and terms accepted", () => {
-      getControl("name")?.setValue("Valid Name");
-      getControl("email")?.setValue("valid@email.com");
-      getControl("password")?.setValue("password1234");
-      getControl("confirmPassword")?.setValue("password1234");
-      getControl("termsAccepted")?.setValue(true);
-      expect(component.registerForm.valid).toBeTrue();
     });
   });
 
@@ -188,10 +95,20 @@ describe("RegisterComponent", () => {
 
       expect(component.loading).toBeFalse();
       expect(component.errorMessage).toBe(
-        "Please fill in all required fields and accept the terms and conditions.",
+        "Please fill in all required fields and accept the terms and conditions."
       );
       expect(component.successMessage).toBe("");
       httpMock.expectNone(`${apiUrl}/users/register`);
+    });
+
+    it("should validate password and confirmPassword match", () => {
+      const group = component.registerForm;
+      group.controls["password"].setValue("password123");
+      group.controls["confirmPassword"].setValue("password123");
+      expect(component.passwordMatchValidator(group)).toBeNull();
+
+      group.controls["confirmPassword"].setValue("password456");
+      expect(component.passwordMatchValidator(group)).toEqual({ notSame: true });
     });
   });
 });

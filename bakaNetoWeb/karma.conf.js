@@ -25,10 +25,11 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/your-project-name'), // Adjust project name if needed
+      dir: require('path').join(__dirname, './coverage/bakaNetoWeb'), // Adjust project name if needed
       subdir: '.',
       reporters: [
         { type: 'html' },
+    { type: 'lcovonly' }, // This is crucial for SonarQube
         { type: 'text-summary' }
       ]
     },

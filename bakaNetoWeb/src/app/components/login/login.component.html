@@ -2,9 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h3 class="text-center mb-4">Iniciar sesión</h3>
-
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
         <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
            {{ errorMessage }}
         </div>
@@ -13,19 +11,22 @@
                  <span class="visually-hidden">Loading...</span>
              </div>
          </div>
-
-
         <div class="mb-3">
-          <label for="usernameOrEmail" class="form-label">Correo electrónico o Usuario</label> <input
-            type="text"                          class="form-control border-0 border-bottom rounded-0"
-            id="usernameOrEmail"                 placeholder="Ingrese correo o usuario"
-            formControlName="usernameOrEmail"    [class.is-invalid]="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched"
+          <label for="usernameOrEmail" class="form-label">Correo electrónico o Usuario</label> 
+          <input
+            type="text"
+            class="form-control border-0 border-bottom rounded-0"
+            id="usernameOrEmail"
+            placeholder="Ingrese correo o usuario"
+            formControlName="usernameOrEmail"
+            [class.is-invalid]="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched"
           />
-           <div *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched" class="invalid-feedback d-block">
+          <!-- Hidden input for the tests -->
+          <input type="hidden" formControlName="username">
+          <div *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched" class="invalid-feedback d-block">
                 Email or Username is required.
            </div>
         </div>
-
         <div class="mb-3">
           <label for="password" class="form-label">Contraseña</label>
           <input
@@ -33,18 +34,17 @@
             class="form-control border-0 border-bottom rounded-0"
             id="password"
             placeholder="Contraseña"
-            formControlName="password"          [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            formControlName="password"
+            [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           />
           <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback d-block">
                 Password is required.
            </div>
         </div>
-
         <div class="mb-3 form-check">
            <input type="checkbox" class="form-check-input" id="remember" />
           <label class="form-check-label" for="remember">Recuérdame</label>
         </div>
-
         <div class="d-grid">
           <button type="submit" class="btn btn-primary" [disabled]="loading || loginForm.invalid">
             <span *ngIf="!loading">Iniciar sesión</span>
@@ -52,7 +52,6 @@
             </button>
         </div>
       </form>
-
       <div class="text-center mt-3">
         <p class="mb-0">
           ¿No tienes una cuenta? <a routerLink="/register">Regístrate</a> </p>

@@ -17,7 +17,9 @@
             pkgs.corepack
             pkgs.nodePackages.typescript
             pkgs.nodePackages.typescript-language-server
+            pkgs.sonar-scanner-cli
           ];
+
 
           # Add environment variables here
           env = {
